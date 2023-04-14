@@ -1,0 +1,31 @@
+{
+  "name": "webxdc-yjs-provider",
+  "version": "1.0.0",
+  "description": "Sync webxdc app state with Yjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WofWca/webxdc-yjs-provider.git"
+  },
+  "keywords": [
+    "webxdc",
+    "Yjs"
+  ],
+  "author": {
+    "name": "WofWca",
+    "email": "wofwca@protonmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/WofWca/webxdc-yjs-provider/issues"
+  },
+  "homepage": "https://github.com/WofWca/webxdc-yjs-provider#readme",
+  "peerDependencies": {
+    "yjs": "^13.0.0"
+  },
+  "devDependencies": {
+    "yjs": "^13.0.0"
+  }
+}
