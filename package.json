@@ -22,6 +22,9 @@
     "url": "https://github.com/WofWca/webxdc-yjs-provider/issues"
   },
   "homepage": "https://github.com/WofWca/webxdc-yjs-provider#readme",
+  "dependencies": {
+    "js-base64": "^3.0.0"
+  },
   "peerDependencies": {
     "yjs": "^13.0.0"
   },
