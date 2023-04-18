@@ -11,13 +11,13 @@ import { fromUint8Array, toUint8Array } from "js-base64"
 /**
  * @param {YUpdate} update
  */
-function serializeUpdate(update) {
+export function serializeUpdate(update) {
 	return fromUint8Array(update);
 }
 /**
  * @param {ReturnType<typeof serializeUpdate>} serializedUpdate
  */
-function deserializeUpdate(serializedUpdate) {
+export function deserializeUpdate(serializedUpdate) {
 	return toUint8Array(serializedUpdate);
 }
 
