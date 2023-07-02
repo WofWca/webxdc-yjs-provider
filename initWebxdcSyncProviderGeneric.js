@@ -1,5 +1,5 @@
 // @ts-check
-import { applyUpdate as YApplyUpdate } from "yjs"
+import { applyUpdateV2 as YApplyUpdate } from "yjs"
 
 /** @typedef {import("yjs").Doc} YDoc */
 /** @typedef {Parameters<YApplyUpdate>[2]} TransactionOrigin */
@@ -43,7 +43,7 @@ export function initWebxdcSyncProvider(
 	)
 
 	// TODO perf: add an option to throttle this.
-	ydoc.on('update', (/** @type {Uint8Array} */update, origin) => {
+	ydoc.on('updateV2', (/** @type {Uint8Array} */update, origin) => {
 		if (origin === transactionOrigin) {
 			return
 		}
