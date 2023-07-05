@@ -1,6 +1,6 @@
 {
   "name": "webxdc-yjs-provider",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Sync webxdc app state with Yjs",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/WofWca/webxdc-yjs-provider#readme",
   "dependencies": {
-    "js-base64": "^3.0.0"
+    "js-base64": "^3.0.0",
+    "just-throttle": ">=2.3.0 <5"
   },
   "peerDependencies": {
     "yjs": "^13.0.0"

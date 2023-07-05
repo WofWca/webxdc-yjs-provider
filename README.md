@@ -7,11 +7,12 @@ If your app is state-based rather than event-based (which is most likely the cas
 
 ```javascript
 import * as Y from "yjs";
-import { initWebxdcSyncProvider } from "webxdc-yjs-provider";
+import { WebxdcSyncProvider } from "webxdc-yjs-provider";
 
 async function init() {
   const ydoc = new Y.Doc();
-  await initWebxdcSyncProvider(ydoc);
+  const provider = new WebxdcSyncProvider(ydoc);
+  await provider.initialStateRestored;
   // From now on the state of the `ydoc` is automatically synced between
   // all the chat members (peers).
 

@@ -1,8 +1,10 @@
 // @ts-check
 import {
-	initWebxdcSyncProvider as initWebxdcSyncProviderGeneric
+	WebxdcSyncProvider as WebxdcSyncProviderGeneric
 } from "./initWebxdcSyncProviderGeneric"
 import { fromUint8Array, toUint8Array } from "js-base64"
+// Why not `lodash.throttle`? This one's ligther.
+import throttle from "just-throttle"
 
 /** @typedef {import("yjs").applyUpdate} YApplyUpdate */
 /** @typedef {Parameters<YApplyUpdate>[1]} YUpdate */
@@ -22,15 +24,38 @@ export function deserializeUpdate(serializedUpdate) {
 }
 
 /**
- * A partial version of {@link initWebxdcSyncProviderGeneric}
- * @param {Parameters<typeof initWebxdcSyncProviderGeneric>[0]} ydoc
- * @param {Parameters<typeof initWebxdcSyncProviderGeneric>[3]} [transactionOrigin]
+ * A version of {@link WebxdcSyncProviderGeneric} with reasonable defaults.
  */
-export function initWebxdcSyncProvider(ydoc, transactionOrigin) {
-	return initWebxdcSyncProviderGeneric(
-		ydoc,
-		serializeUpdate,
-		deserializeUpdate,
-		transactionOrigin,
-	);
+export class WebxdcSyncProvider extends WebxdcSyncProviderGeneric {
+	/**
+	 * @param {ConstructorParameters<typeof WebxdcSyncProviderGeneric>[0]} ydoc
+	 * @param {ConstructorParameters<typeof WebxdcSyncProviderGeneric>[3]} [transactionOrigin]
+	 */
+	constructor(ydoc, transactionOrigin) {
+		super(
+			ydoc,
+			serializeUpdate,
+			deserializeUpdate,
+			transactionOrigin,
+		);
+		/**
+		 * Delta Chat Core throttles updates heavily, from what I've heard.
+		 * TODO refactor: a link to the spec or the source code or something.
+		 */
+		const throttlePeriod = 2000;
+		/** @type {WebxdcSyncProviderGeneric['onNeedToSendLocalUpdates']} */
+		this.onNeedToSendLocalUpdates = throttle(
+			this.sendUnsentLocalUpdates,
+			throttlePeriod,
+			// TODO maybe use both leading and trailing.
+			// But it doesn't work properly in `just-throttle` IMO:
+			// https://github.com/angus-c/just/issues/207#issuecomment-1621879811
+			{ leading: false, trailing: true }
+		);
+		// TODO fix: need to ensure that the updates get send when the page gets closed.
+		// See https://developer.chrome.com/blog/page-lifecycle-api/#the-beforeunload-event
+		// https://stackoverflow.com/questions/7317273/warn-user-before-leaving-web-page-with-unsaved-changes
+		// Also maybe need to add info about this to the docs of `WebxdcSyncProviderGeneric`.
+		// Or should it just implement it by default itself?
+	}
 }
