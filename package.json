@@ -1,7 +1,8 @@
 {
   "name": "webxdc-yjs-provider",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Sync webxdc app state with Yjs",
+  "license": "Apache-2.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
