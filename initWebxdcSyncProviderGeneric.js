@@ -56,6 +56,8 @@ export class WebxdcSyncProvider {
 		 */
 		this.initialStateRestored = webxdc.setUpdateListener(
 			(update) => {
+				// Keep in mind that this is also called for the updates that we send.
+				// Re-applying an update is fine in Yjs.
 				// TODO perf: don't update one by one. Batch updates? ydoc.transact?
 				// TODO maybe `transactionOrigin` should be the `selfAddr` of the sender??
 				// Perhaps with `webxdc` (pre|suf)fix.
