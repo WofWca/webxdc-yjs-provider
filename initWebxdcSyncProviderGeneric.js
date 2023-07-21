@@ -66,7 +66,7 @@ export class WebxdcSyncProvider {
 			// TODO perf: utilize local cache, e.g. `y-indexeddb`. Although make sure that
 			// the update is actually stored. See https://github.com/yjs/y-indexeddb/issues/28
 			0,
-		);;
+		);
 
 		/**
 		 * @private
