@@ -56,8 +56,11 @@ export class WebxdcSyncProvider extends WebxdcSyncProviderGeneric {
 			transactionOrigin,
 		);
 		/**
-		 * Delta Chat Core throttles updates heavily, from what I've heard.
-		 * TODO refactor: a link to the spec or the source code or something.
+		 * Delta Chat Core throttles updates pretty heavily:
+		 * https://github.com/deltachat/deltachat-core-rust/blob/b96028cd87f02a83f8f0a5282da4b4bb88cdc05c/src/context.rs#L379
+		 * https://codeberg.org/webxdc/editor/pulls/23#issuecomment-996164
+		 * So we better spend the quota wisely, i.e. not spend all of it immediately
+		 * and then get throttled by the messenger implementation.
 		 */
 		const throttlePeriod = 2000;
 		/** @type {WebxdcSyncProviderGeneric['onNeedToSendLocalUpdates']} */
