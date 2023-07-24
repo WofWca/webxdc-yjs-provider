@@ -16,6 +16,7 @@
  */
 
 // @ts-check
+// TODO refactor: rename the file, I guess? It's not `init` anymore.
 import {
 	WebxdcSyncProvider as WebxdcSyncProviderGeneric
 } from "./initWebxdcSyncProviderGeneric"
