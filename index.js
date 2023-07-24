@@ -62,11 +62,11 @@ export class WebxdcSyncProvider extends WebxdcSyncProviderGeneric {
 		 * So we better spend the quota wisely, i.e. not spend all of it immediately
 		 * and then get throttled by the messenger implementation.
 		 */
-		const throttlePeriod = 2000;
+		const throttlePeriodMs = 2000;
 		/** @type {WebxdcSyncProviderGeneric['onNeedToSendLocalUpdates']} */
 		this.onNeedToSendLocalUpdates = throttle(
 			this.sendUnsentLocalUpdates,
-			throttlePeriod,
+			throttlePeriodMs,
 			// TODO maybe use both leading and trailing.
 			// But it doesn't work properly in `just-throttle` IMO:
 			// https://github.com/angus-c/just/issues/207#issuecomment-1621879811
