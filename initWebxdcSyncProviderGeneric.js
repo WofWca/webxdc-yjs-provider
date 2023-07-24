@@ -100,6 +100,13 @@ export class WebxdcSyncProvider {
 			this._unsentLocalUpdates.push(update);
 			this.onNeedToSendLocalUpdates();
 		});
+
+		/**
+		 * @public
+		 * @see https://docs.webxdc.org/spec.html#sendupdate
+		 * @type {string}
+		 */
+		this.sendUpdateDescr = 'Document updated';
 	}
 	/**
 	 * Send the unsent local updates to other peers.
@@ -119,7 +126,7 @@ export class WebxdcSyncProvider {
 				// 	sender: webxdc.selfAddr
 				// },
 			},
-			''
+			this.sendUpdateDescr
 		);
 		this._unsentLocalUpdates = [];
 	}
