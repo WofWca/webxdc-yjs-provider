@@ -77,6 +77,8 @@ export class WebxdcSyncProvider {
 		 * @private
 		 */
 		this._serializeUpdate = serializeUpdate;
+		// TODO Consider getting rid of the default value, because it's not obvious
+		// to users that webxdc updates are sent on each Yjs udpate.
 		/**
 		 * This function is automatically called whenever the {@link ydoc} is
 		 * updated by us (and not the other peers), that is whenever we have updates
