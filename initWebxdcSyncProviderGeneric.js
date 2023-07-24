@@ -78,8 +78,9 @@ export class WebxdcSyncProvider {
 		 */
 		this._serializeUpdate = serializeUpdate;
 		/**
-		 * This function is called whenever the {@link ydoc} is updated by us, that is
-		 * whenever we have updates that need to be sent to other peers.
+		 * This function is automatically called whenever the {@link ydoc} is
+		 * updated by us (and not the other peers), that is whenever we have updates
+		 * that need to be sent to other peers.
 		 *
 		 * You can override this property.
 		 *
