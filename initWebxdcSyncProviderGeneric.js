@@ -79,8 +79,7 @@ export class WebxdcSyncProvider {
 		this._serializeUpdate = serializeUpdate;
 		/**
 		 * This function is called whenever the {@link ydoc} is updated by us, that is
-		 * whenever we have updates that need to be sent to other peers, with `this` value
-		 * being the {@link WebxdcSyncProvider} instance.
+		 * whenever we have updates that need to be sent to other peers.
 		 *
 		 * You can override this property.
 		 *
@@ -88,7 +87,6 @@ export class WebxdcSyncProvider {
 		 *
 		 * @public
 		 * @type {() => void}
-		 * @this {this}
 		 */
 		this.onNeedToSendLocalUpdates = this.sendUnsentLocalUpdates;
 
