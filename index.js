@@ -53,8 +53,29 @@ export class WebxdcSyncProvider extends WebxdcSyncProviderGeneric {
 			ydoc,
 			serializeUpdate,
 			deserializeUpdate,
+			sendUpdate,
 			transactionOrigin,
 		);
+
+		// TODO refactor: make `onIncomingYjsUpdate` private for the inheriting class?
+		/**
+		 * Resolves when the stored state of the webxdc app has been applied to the {@link ydoc}.
+		 * @public
+		 * @readonly
+		 * @type {Promise<void>}
+		 */
+		this.initialStateRestored = webxdc.setUpdateListener(
+			(webxdcUpdate) => {
+				// Keep in mind that this is also called for the updates that we send.
+				// Re-applying an update is fine in Yjs.
+				// TODO perf: don't update one by one. Batch updates? ydoc.transact?
+				this.onIncomingYjsUpdate(webxdcUpdate.payload)
+			},
+			// TODO perf: utilize local cache, e.g. `y-indexeddb`. Although make sure that
+			// the update is actually stored. See https://github.com/yjs/y-indexeddb/issues/28
+			0,
+		);
+
 		/**
 		 * Delta Chat Core throttles updates pretty heavily:
 		 * https://github.com/deltachat/deltachat-core-rust/blob/b96028cd87f02a83f8f0a5282da4b4bb88cdc05c/src/context.rs#L379
@@ -72,6 +93,29 @@ export class WebxdcSyncProvider extends WebxdcSyncProviderGeneric {
 			// https://github.com/angus-c/just/issues/207#issuecomment-1621879811
 			{ leading: false, trailing: true }
 		);
+
+		// TODO refactor: turn this into a constructor parameter so it's easier
+		// to remember it?
+		/**
+		 * @public
+		 * @see https://docs.webxdc.org/spec.html#sendupdate
+		 * @type {string}
+		 */
+		this.sendUpdateDescr = 'Document updated';
+
+		/**
+		 * @param {ReturnType<typeof serializeUpdate>} outgoingSerializedYjsUpdate
+		 * @returns {void}
+		 */
+		function sendUpdate(outgoingSerializedYjsUpdate) {
+			webxdc.sendUpdate(
+				{
+					payload: outgoingSerializedYjsUpdate,
+				},
+				this.sendUpdateDescr
+			)
+		}
+
 		// TODO fix: need to ensure that the updates get send when the page gets closed.
 		// See https://developer.chrome.com/blog/page-lifecycle-api/#the-beforeunload-event
 		// https://stackoverflow.com/questions/7317273/warn-user-before-leaving-web-page-with-unsaved-changes

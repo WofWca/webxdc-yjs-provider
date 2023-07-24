@@ -38,35 +38,41 @@ export class WebxdcSyncProvider {
 	 * Yjs updates are `Uint8Array`, which are not primitives, so we need to transform them.
 	 * https://docs.yjs.dev/api/document-updates#example-base64-encoding
 	 * @param {(serializedUpdate: unknown) => YUpdate} deserializeUpdate
+	 * @param {(
+	 * 	outgoingSerializedYjsUpdate: ReturnType<WebxdcSyncProvider['_serializeUpdate']>
+	 * ) => void} sendUpdate
 	*/
 	constructor(
 		ydoc,
 		serializeUpdate,
 		deserializeUpdate,
+		sendUpdate,
 		transactionOrigin = '__webxdcUpdateHandler'
 	) {
 		// TODO refactor: import webxdc types.
 		// https://github.com/webxdc/webxdc_docs/blob/18f5e5a7bb62bdd9df47b129179948aac269769b/src/tips_and_tricks.md#get-the-typescript-definitions
 
 		/**
-		 * Resolves when the stored state of the webxdc app has been applied to the {@link ydoc}.
+		 * This must be called for every update that hasn't been applied to
+		 * the {@link ydoc}. This includes updates sent by other peers, and updates
+		 * from the previous sessions. Calling it with an update that has already
+		 * been applied is OK, and it does nothing.
 		 * @public
 		 * @readonly
-		 * @type {Promise<void>}
+		 * @param {Parameters<typeof deserializeUpdate>[0]} incomingSerializedYjsUpdate
+		 * @returns {void}
 		 */
-		this.initialStateRestored = webxdc.setUpdateListener(
-			(update) => {
-				// Keep in mind that this is also called for the updates that we send.
-				// Re-applying an update is fine in Yjs.
-				// TODO perf: don't update one by one. Batch updates? ydoc.transact?
-				// TODO maybe `transactionOrigin` should be the `selfAddr` of the sender??
-				// Perhaps with `webxdc` (pre|suf)fix.
-				YApplyUpdate(ydoc, deserializeUpdate(update.payload), transactionOrigin)
-			},
-			// TODO perf: utilize local cache, e.g. `y-indexeddb`. Although make sure that
-			// the update is actually stored. See https://github.com/yjs/y-indexeddb/issues/28
-			0,
-		);
+		this.onIncomingYjsUpdate = function (incomingSerializedYjsUpdate) {
+			// TODO maybe `transactionOrigin` should be the `selfAddr` of the sender??
+			// Perhaps with `webxdc` (pre|suf)fix.
+			YApplyUpdate(ydoc, deserializeUpdate(incomingSerializedYjsUpdate), transactionOrigin);
+		}
+
+		/**
+		 * @private
+		 * @type {typeof sendUpdate}
+		 */
+		this.sendUpdate = sendUpdate;
 
 		/**
 		 * @private
@@ -100,13 +106,6 @@ export class WebxdcSyncProvider {
 			this._unsentLocalUpdates.push(update);
 			this.onNeedToSendLocalUpdates();
 		});
-
-		/**
-		 * @public
-		 * @see https://docs.webxdc.org/spec.html#sendupdate
-		 * @type {string}
-		 */
-		this.sendUpdateDescr = 'Document updated';
 	}
 	/**
 	 * Send the unsent local updates to other peers.
@@ -118,16 +117,31 @@ export class WebxdcSyncProvider {
 		if (this._unsentLocalUpdates.length <= 0) {
 			return;
 		}
-		webxdc.sendUpdate(
-			{
-				payload: this._serializeUpdate(YMergeUpdates(this._unsentLocalUpdates)),
-				// payload: {
-				// 	update: serializableArray,
-				// 	sender: webxdc.selfAddr
-				// },
-			},
-			this.sendUpdateDescr
-		);
+		this.sendUpdate(this.takeOutUnsentLocalUpdates());
+	}
+	// TODO refactor: if the library user wants to use only this function to send
+	// updates and never `sendUnsentLocalUpdates` then requiring
+	// `sendUpdate` as a constructor parameter doesn't make sense.
+	/**
+	 * Useful when you want to send the Yjs updates data manually.
+	 * Returns `undefined` if there are no unsent updates.
+	 * @see {@link sendUnsentLocalUpdates}
+	 * @public
+	 * @returns {ReturnType<WebxdcSyncProvider['_serializeUpdate']> | undefined}
+	 */
+	takeOutUnsentLocalUpdates() {
+		if (this._unsentLocalUpdates.length <= 0) {
+			return undefined;
+		}
+		const ret = this._serializeUpdate(YMergeUpdates(this._unsentLocalUpdates));
 		this._unsentLocalUpdates = [];
+		return ret;
+	}
+	/**
+	 * @public
+	 * @returns {boolean}
+	 */
+	get haveUnsentUpdates() {
+		return this._unsentLocalUpdates.length > 0;
 	}
 }

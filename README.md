@@ -32,4 +32,6 @@ On how to use the `Y.Doc` object, consult [Yjs docs](https://github.com/yjs/yjs/
 
 ## Disadvantages
 
+<!-- TODO update this section with accordance to version 4. -->
+
 At its current state, this library completely abstracts away the webxdc update API, namely [`webxdc.setUpdateListener()`](https://docs.webxdc.org/spec.html#setupdatelistener) and [`webxdc.sendUpdate()`](https://docs.webxdc.org/spec.html#sendupdate), so you won't be able to use them manually. All you can do is sync the `Y.Doc` state. This is sufficient for early stages of development, or prototyping.
