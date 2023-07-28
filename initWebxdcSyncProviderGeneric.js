@@ -14,14 +14,15 @@ export class WebxdcSyncProvider {
 	 * coming from `webxdc.setUpdateListener` to the {@link ydoc}
 	 * (see {@link onIncomingYjsUpdate}, {@link YApplyUpdate|`Y.applyUpdate`})
 	 * @param {(update: YUpdate) => unknown} serializeUpdate
-	 * The webxdc spec requires update payloads to be
+	 * [The webxdc spec requires](https://github.com/webxdc/webxdc_docs/blob/18f5e5a7bb62bdd9df47b129179948aac269769b/src/spec.md#sendupdate)
+	 * update payloads to be
 	 *
 	 * > any javascript primitive, array or object
 	 *
-	 * https://github.com/webxdc/webxdc_docs/blob/18f5e5a7bb62bdd9df47b129179948aac269769b/src/spec.md#sendupdate
 	 * Yjs updates are `Uint8Array`, which are not primitives, so we need to transform them.
 	 * https://docs.yjs.dev/api/document-updates#example-base64-encoding
 	 * @param {(serializedUpdate: unknown) => YUpdate} deserializeUpdate
+	 * see {@link serializeUpdate}
 	 * @param {(
 	 * 	outgoingSerializedYjsUpdate: ReturnType<WebxdcSyncProvider['_serializeUpdate']>
 	 * ) => void} sendUpdate
