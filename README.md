@@ -30,8 +30,57 @@ init();
 
 On how to use the `Y.Doc` object, consult [Yjs docs](https://github.com/yjs/yjs/#api).
 
-## Disadvantages
+### How to use `webxdc.sendUpdate()` and `webxdc.setUpdateListener()`
 
-<!-- TODO update this section with accordance to version 4. -->
+In the above example it's impossible to use the [`webxdc.sendUpdate()`](https://docs.webxdc.org/spec.html#sendupdate) and [`webxdc.setUpdateListener()`](https://docs.webxdc.org/spec.html#setupdatelistener) manually (there are gonna be errors if you try).
+If you need those functions, use the following example:
 
-At its current state, this library completely abstracts away the webxdc update API, namely [`webxdc.setUpdateListener()`](https://docs.webxdc.org/spec.html#setupdatelistener) and [`webxdc.sendUpdate()`](https://docs.webxdc.org/spec.html#sendupdate), so you won't be able to use them manually. All you can do is sync the `Y.Doc` state. This is sufficient for early stages of development, or prototyping.
+<details><summary>Code</summary>
+
+```javascript
+import * as Y from "yjs";
+import { serializeUpdate, deserializeUpdate } from "webxdc-yjs-provider";
+// Note the different file.
+import { WebxdcSyncProvider } from "webxdc-yjs-provider/initWebxdcSyncProviderGeneric";
+
+const ydoc = new Y.Doc();
+const provider = new WebxdcSyncProvider(
+  ydoc,
+  serializeUpdate,
+  deserializeUpdate,
+  (outgoingSerializedYjsUpdate) => {
+    webxdc.sendUpdate({
+      payload: {
+        serializedYjsUpdate: outgoingSerializedYjsUpdate,
+        myPayload: undefined,
+      },
+    }, "Document changed");
+  },
+);
+const initialStateRestored = webxdc.setUpdateListener(update => {
+  if (update.payload?.serializedYjsUpdate) {
+    provider.onIncomingYjsUpdate(update.payload.serializedYjsUpdate);
+  }
+  if (update.payload?.myPayload) {
+    // handleMyPayload(update.payload.myPayload);
+  }
+});
+// Reassign this in order to not send each update immediately
+// provider.onNeedToSendLocalUpdates = () => {};
+// sendButton.addEventListener("click", () => {
+//   provider.sendUnsentLocalUpdates();
+// });
+
+// ...
+webxdc.sendUpdate({
+  payload: {
+    serializedYjsUpdate: undefined,
+    myPayload: "some data",
+  },
+  info: "some info",
+  summary: "some summary",
+  document: "some document name",
+}, "My update");
+```
+
+</details>
