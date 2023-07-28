@@ -10,8 +10,9 @@ import { applyUpdateV2 as YApplyUpdate, mergeUpdatesV2 as YMergeUpdates } from "
 export class WebxdcSyncProvider {
 	/**
 	 * @param {YDoc} ydoc
-	 * @param {TransactionOrigin} transactionOrigin `transactionOrigin` to use when updating
-	 * the `ydoc` (see {@link YApplyUpdate|`Y.applyUpdate`})
+	 * @param {TransactionOrigin} transactionOrigin `transactionOrigin` to use when applying updates
+	 * coming from `webxdc.setUpdateListener` to the {@link ydoc}
+	 * (see {@link onIncomingYjsUpdate}, {@link YApplyUpdate|`Y.applyUpdate`})
 	 * @param {(update: YUpdate) => unknown} serializeUpdate
 	 * The webxdc spec requires update payloads to be
 	 *
