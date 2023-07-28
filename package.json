@@ -1,6 +1,6 @@
 {
   "name": "webxdc-yjs-provider",
-  "version": "4.0.0-rc.0",
+  "version": "4.0.1",
   "description": "Sync webxdc app state automatically with Yjs",
   "license": "Apache-2.0",
   "main": "index.js",
