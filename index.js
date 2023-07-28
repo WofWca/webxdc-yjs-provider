@@ -1,3 +1,4 @@
+/** @license Apache-2.0 */
 // @ts-check
 // TODO refactor: rename the file, I guess? It's not `init` anymore.
 import {
