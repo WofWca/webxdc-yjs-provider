@@ -1,3 +1,4 @@
+/** @license Apache-2.0 */
 // @ts-check
 import { applyUpdateV2 as YApplyUpdate, mergeUpdatesV2 as YMergeUpdates } from "yjs"
 
