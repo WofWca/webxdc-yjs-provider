@@ -3,7 +3,7 @@
 // TODO refactor: rename the file, I guess? It's not `init` anymore.
 import {
 	WebxdcSyncProvider as WebxdcSyncProviderGeneric
-} from "./initWebxdcSyncProviderGeneric"
+} from "./WebxdcSyncProviderGeneric"
 import { fromUint8Array, toUint8Array } from "js-base64"
 // Why not `lodash.throttle`? This one's ligther.
 import throttle from "just-throttle"

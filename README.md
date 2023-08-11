@@ -41,7 +41,7 @@ If you need those functions, use the following example:
 import * as Y from "yjs";
 import { serializeUpdate, deserializeUpdate } from "webxdc-yjs-provider";
 // Note the different file.
-import { WebxdcSyncProvider } from "webxdc-yjs-provider/initWebxdcSyncProviderGeneric";
+import { WebxdcSyncProvider } from "webxdc-yjs-provider/WebxdcSyncProviderGeneric";
 
 const ydoc = new Y.Doc();
 const provider = new WebxdcSyncProvider(
