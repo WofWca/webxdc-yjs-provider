@@ -120,6 +120,9 @@ export class WebxdcSyncProvider {
 			return undefined;
 		}
 		const ret = this._serializeUpdate(YMergeUpdates(this._unsentLocalUpdates));
+		// TODO refactor: idk, maybe we need to rename things, because the fact
+		// that we "took out" unsent local updates doesn't necessarily mean that
+		// we're gonna send them.
 		this._unsentLocalUpdates = [];
 		return ret;
 	}
