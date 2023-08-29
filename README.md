@@ -87,7 +87,7 @@ webxdc.sendUpdate({
 
 ## Also run your app as a regular website
 
-As we know, webxdc apps are very much just regular web apps, except that they may also utilize the [webxdc API](https://docs.webxdc.org/spec.html#webxdc-api), so it's very easy to make a web version of your webxdc app (or vice versa, if the app is P2P-ready).
+As we know, webxdc apps are very much just regular web apps, except that they may also utilize the [webxdc API](https://docs.webxdc.org/spec.html#webxdc-api). This means that, it's very easy to make a web version of your webxdc app (or vice versa, if the app is P2P-ready).
 
 <!-- For reference, here's the first ever (I think) interoperable (web and webxdc) app:
 https://support.delta.chat/t/porting-vikunja-todo-list-manager-to-webxdc/2471/6?u=wofwca
