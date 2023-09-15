@@ -85,6 +85,8 @@ webxdc.sendUpdate({
 
 </details>
 
+Or consider inlining the library (i.e. writing its functionality yourself).
+
 ## Also run your app as a regular website
 
 As we know, webxdc apps are very much just regular web apps, except that they may also utilize the [webxdc API](https://docs.webxdc.org/spec.html#webxdc-api). This means that, it's very easy to make a web version of your webxdc app (or vice versa, if the app is P2P-ready).
