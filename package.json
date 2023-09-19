@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://codeberg.org/webxdc/webxdc-yjs-provider.git"
+    "url": "git+https://codeberg.org/WofWca/webxdc-yjs-provider.git"
   },
   "keywords": [
     "webxdc",
@@ -20,9 +20,9 @@
     "email": "wofwca@protonmail.com"
   },
   "bugs": {
-    "url": "https://codeberg.org/webxdc/webxdc-yjs-provider/issues"
+    "url": "https://codeberg.org/WofWca/webxdc-yjs-provider/issues"
   },
-  "homepage": "https://codeberg.org/webxdc/webxdc-yjs-provider",
+  "homepage": "https://codeberg.org/WofWca/webxdc-yjs-provider",
   "dependencies": {
     "js-base64": "^3.0.0",
     "just-throttle": ">=2.3.0 <5"
